@@ -3,14 +3,20 @@ import {TEST_USERS, findAccount} from './accounts.js';
 import {PORT, issuer, browserBaseUrl} from './config.js';
 import {registerInteractionRoutes} from './interactions.js';
 
+// Grant types:
+//   client_credentials  — service-to-service calls; no user involved
+//   authorization_code  — user-facing apps that redirect the browser to the login UI
+//   refresh_token       — apps that need to maintain a session beyond the access token TTL
 const CLIENTS: oidc.ClientMetadata[] = [
   {
+    // Backend service making authenticated API calls on its own behalf
     client_id: 'acurement',
     client_secret: 'acurement',
     grant_types: ['client_credentials'],
     redirect_uris: [],
   },
   {
+    // Web app with a user-facing login flow and long-lived sessions
     client_id: 'benefitall',
     client_secret: 'benefitall',
     grant_types: ['authorization_code', 'client_credentials', 'refresh_token'],
