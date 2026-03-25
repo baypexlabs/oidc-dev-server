@@ -22,7 +22,7 @@
     "oidc-provider": "^9.7.1"
   },
   "devDependencies": {
-    "@types/node": "^24.0.0",
+    "@types/node": "^25.5.0",
     "@types/oidc-provider": "^9.5.0",
     "eslint": "^10.1.0",
     "gts": "^7.0.0",
