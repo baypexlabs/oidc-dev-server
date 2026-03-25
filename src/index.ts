@@ -5,16 +5,23 @@ import {registerInteractionRoutes} from './interactions.js';
 
 // Stable signing key so tokens remain valid across restarts.
 // This is a dev-only key — never use in production.
+// RS256 (RSA 2048) matches oidc-provider's default expected algorithm so clients
+// don't need to declare id_token_signed_response_alg explicitly.
+// This is a dev-only key — never use in production.
 const DEV_JWKS = {
   keys: [
     {
-      kty: 'EC',
-      crv: 'P-256',
-      x: 'Kea6xMFSjDdcObwGGG-AkG-PMDqO0qHGLt254skAS3Q',
-      y: 'z9eQ7SoRt106RsPY8s8dnZFTVuav8QFIMiWPNSKNN-U',
-      d: 'DV5450_N_r9gcNiIT_1yhH0uIj-91sk3B1neb7WpBJk',
+      kty: 'RSA',
+      n: 'lynF2NtadAPlyLyE5YrNqv98KIR6308e3kywo7beN_egDzBB2SWdRCLAOrfPtzHeVxOOCWFIeP7YWf_RkgQp_5vv162uRCKtaht0FHvzrBEnpkbHi6WWG1EcHGz6PbMbOc7y_GOkyXUigWasK6rJPniam2qmw4Q6Ycu8OMSdWRfc-KXBUTEQCs5WTEibFM-YxKjLBk9iKgqRnPE9kRLHTe7mfICSUjhDk7yq8OVH0jxf7SeF-EZ-yG5GvzFdvmUIECMZsSHeNJJeQcGUzU8ZAsoGcGB9ihbBlZ7KbvDOFPKqKFIns_6wD7QyOAR9rdex6b36YgUNrRDqWKydMArlUw',
+      e: 'AQAB',
+      d: 'FHV855rYpTcZ1I9fVUnyCCDIBxvXHX4x6Vhr19yaOuzy5ttbLi6fGGezqL7UCDFhrFtjL_XQvz-OvK-ZB7A0lvnd_kztdx9SZTgN_---zR0NRr3xp_7jUBMsQNSnEc658psF3A8IcJO_9c-VodtdnWzpT_uhUnkFBdNzSCOkQDh7VQU_TfXj7c8fOlmEeyQ_90dmVo82yQMs0lBV1U8yGjOBgqoxAIuyX_M-YnoRcpTqKoJjiyx3zrTsJxGGXx6WG4YDSU1klekrdS6iDFjvxBzCD8E4gg8pN7JoKoz3RHg_Ex9878w-VcAW9Aql0NEmoclGXLgGDOA9HMlZ8n2GoQ',
+      p: 'yhAcWMMC9Il1_09HmwAS4xVNbzsQW1X89aPvvUXabH9NT_ifkhyGmK4ah6hKOHBIQDM3XTJNM-EEtQRtU3B90aOkS3HDNFH6ku8hvU_1Ibsbm0RtpuCfefP6MkbCo8qwmUA2dcTKxUVwXDNgD9Qsi9XZ2oa5hWz_NlE3N5LLh1k',
+      q: 'v4NymT0Ll6zlNfx2f-rswr5w16r9_f1_yhubJ5WYToeV_nf_JEPfpV2mV4fbTr5Mph8NXYtijOefSMS0ETZh5UM4XFKhKdGSYvM0yda8Q6yuTFU9sn2bNEUCSD28ZiotpTbiJNK2Irk5e7xxWUI77t4nbL5OoIaKSUU1XH-mqIs',
+      dp: 'ryyoZosp1LYXBe_FNCssNJITP4sE8yno00v8Wypj4gu7CsmQDSuNxG-rsE_FiIhPGtlL9g_VvlQlsIjV_rBXY5dqp71IbeNkSF3n8iePbF654DHCnhm-KAvLrCqMM1NVJob0r8SbxcodTtF7Rj27IL-Uzk5eJ74GwyBFrngk2oE',
+      dq: 'RXwJvjN520QtvZKl4-92i4nRI0607Mxm6wttFcWfBw8Gitc6yQufPz5lNeji1wUQhk1J6iDCVuFK13oW4w_aIPZsooKQWr3g4Ongw0KX9-3VJ3jd877C6woGs_NCQccX3JO3JSkWUC7n_k72yS3Q1O_hWgEKQg_OaJslqzPdYdU',
+      qi: 'oTxHk1KoxPs904vOl24WT8QPDCiEWcGGUJe8GElWKVElWzZqfnUdMP8ldcont1jD57mxblR_O9cdtVVE906cbVM0UTSNS6twvpcTw74QtxKeS6a2tZkryyL-dVbasZJqOIobXhOiGCkAJDRTkpOnhNlIDwTphGOLwVAqWTtkWG0',
       use: 'sig',
-      alg: 'ES256',
+      alg: 'RS256',
       kid: 'dev-key-1',
     },
   ],
