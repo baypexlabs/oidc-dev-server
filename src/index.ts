@@ -13,6 +13,7 @@ const CLIENTS: oidc.ClientMetadata[] = [
   {
     client_id: 'benefitall',
     client_secret: 'benefitall',
+    grant_types: ['authorization_code', 'client_credentials', 'refresh_token'],
     redirect_uris: ['http://localhost:5173/auth/callback'],
   },
 ];
@@ -23,6 +24,20 @@ const provider = new oidc.Provider(issuer, {
     keys: [process.env.COOKIE_SECRET ?? 'dev-cookie-secret'],
   },
   clients: CLIENTS,
+  scopes: ['openid', 'offline_access', 'email', 'profile'],
+  claims: {
+    openid: ['sub'],
+    email: ['email', 'email_verified'],
+    profile: ['name', 'given_name', 'family_name'],
+  },
+  // Include scope claims directly in the ID token rather than userinfo-only
+  conformIdTokenClaims: false,
+  features: {
+    devInteractions: {enabled: false},
+    clientCredentials: {enabled: true},
+    introspection: {enabled: true},
+    revocation: {enabled: true},
+  },
 });
 
 registerInteractionRoutes(provider, TEST_USERS);
