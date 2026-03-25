@@ -3,6 +3,23 @@ import {TEST_USERS, findAccount} from './accounts.js';
 import {PORT, issuer, browserBaseUrl} from './config.js';
 import {registerInteractionRoutes} from './interactions.js';
 
+// Stable signing key so tokens remain valid across restarts.
+// This is a dev-only key — never use in production.
+const DEV_JWKS = {
+  keys: [
+    {
+      kty: 'EC',
+      crv: 'P-256',
+      x: 'Kea6xMFSjDdcObwGGG-AkG-PMDqO0qHGLt254skAS3Q',
+      y: 'z9eQ7SoRt106RsPY8s8dnZFTVuav8QFIMiWPNSKNN-U',
+      d: 'DV5450_N_r9gcNiIT_1yhH0uIj-91sk3B1neb7WpBJk',
+      use: 'sig',
+      alg: 'ES256',
+      kid: 'dev-key-1',
+    },
+  ],
+};
+
 // Grant types:
 //   client_credentials  — service-to-service calls; no user involved
 //   authorization_code  — user-facing apps that redirect the browser to the login UI
@@ -29,6 +46,7 @@ const provider = new oidc.Provider(issuer, {
   cookies: {
     keys: [process.env.COOKIE_SECRET ?? 'dev-cookie-secret'],
   },
+  jwks: DEV_JWKS,
   clients: CLIENTS,
   scopes: ['openid', 'offline_access', 'email', 'profile'],
   claims: {
@@ -43,6 +61,13 @@ const provider = new oidc.Provider(issuer, {
     clientCredentials: {enabled: true},
     introspection: {enabled: true},
     revocation: {enabled: true},
+  },
+  ttl: {
+    Interaction: 3600,  // 1 hour
+    Session: 86400,     // 24 hours
+    Grant: 86400,
+    AccessToken: 3600,
+    IdToken: 3600,
   },
 });
 
