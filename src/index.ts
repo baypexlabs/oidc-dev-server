@@ -3,11 +3,9 @@ import {TEST_USERS, findAccount} from './accounts.js';
 import {PORT, issuer, browserBaseUrl} from './config.js';
 import {registerInteractionRoutes} from './interactions.js';
 
-// Stable signing key so tokens remain valid across restarts.
-// This is a dev-only key — never use in production.
-// RS256 (RSA 2048) matches oidc-provider's default expected algorithm so clients
-// don't need to declare id_token_signed_response_alg explicitly.
-// This is a dev-only key — never use in production.
+// Stable RS256 signing key so tokens remain valid across restarts and clients
+// don't need to declare id_token_signed_response_alg (RS256 is the default).
+// Dev-only — never use in production.
 const DEV_JWKS = {
   keys: [
     {
@@ -45,6 +43,13 @@ const CLIENTS: oidc.ClientMetadata[] = [
     client_secret: 'benefitall',
     grant_types: ['authorization_code', 'client_credentials', 'refresh_token'],
     redirect_uris: ['http://localhost:5173/auth/callback'],
+  },
+  {
+    // Used by the integration test suite
+    client_id: 'test-client',
+    client_secret: 'test-client',
+    grant_types: ['authorization_code', 'refresh_token'],
+    redirect_uris: ['http://test.invalid/callback'],
   },
 ];
 

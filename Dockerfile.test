@@ -1,0 +1,4 @@
+FROM node:24-alpine
+WORKDIR /app
+COPY test/ ./test/
+CMD ["node", "--test", "test/auth-flow.test.mjs"]

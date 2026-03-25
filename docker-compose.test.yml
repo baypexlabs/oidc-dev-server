@@ -1,0 +1,19 @@
+services:
+  oidc-dev-server:
+    image: oidc-dev-server:test
+    build: .
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:31389/.well-known/openid-configuration"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    depends_on:
+      oidc-dev-server:
+        condition: service_healthy
+    environment:
+      OIDC_BASE_URL: http://oidc-dev-server:31389
