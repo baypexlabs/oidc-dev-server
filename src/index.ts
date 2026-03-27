@@ -42,7 +42,9 @@ const CLIENTS: oidc.ClientMetadata[] = [
     client_id: 'benefitall',
     client_secret: 'benefitall',
     grant_types: ['authorization_code', 'client_credentials', 'refresh_token'],
-    redirect_uris: ['http://localhost:5173/auth/callback'],
+    // oidc-provider requires at least one URI to pass startup validation;
+    // runtime checks are bypassed by the redirectUriAllowed patch below.
+    redirect_uris: ['http://localhost'],
   },
   {
     // Used by the integration test suite
@@ -82,6 +84,10 @@ const provider = new oidc.Provider(issuer, {
     IdToken: 3600,
   },
 });
+
+// Dev server only: accept any redirect URI so environment-specific URLs
+// (Codespaces, tunnels, custom ports) don't need to be pre-registered.
+provider.Client.prototype.redirectUriAllowed = () => true;
 
 registerInteractionRoutes(provider, TEST_USERS);
 
